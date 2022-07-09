@@ -12,9 +12,7 @@ class Controls{
             case "DUMMY":
                 this.forward=true;
                 break;
-            }
-
-
+        }
     }
 
     #addKeyboardListeners(){
