@@ -1,5 +1,6 @@
 class Sensor {
   constructor(car) {
+    // gắn vào xe nên sử dụng thuộc tính của xe
     this.car = car;
     this.rayCount = 5;
     this.rayLength = 200;
@@ -57,25 +58,32 @@ class Sensor {
   }
 
   #castRays() {
+    // tìm góc từng mảng riêng lr
     this.rays = [];
     for (let i = 0; i < this.rayCount; i++) {
       const rayAngle =
         lerp(
           this.raySpread / 2,
           -this.raySpread / 2,
+          // thực hiện đồng bộ sensor
           this.rayCount == 1 ? 0.5 : i / (this.rayCount - 1)
         ) + this.car.angle;
-
+      // vị trí đặt của sensor
+      // điểm đầu
       const start = { x: this.car.x, y: this.car.y };
+      // điểm cuối
       const end = {
         x: this.car.x - Math.sin(rayAngle) * this.rayLength,
         y: this.car.y - Math.cos(rayAngle) * this.rayLength,
       };
+
+      // đầy vào mảng đã tạo
       this.rays.push([start, end]);
     }
   }
 
   draw(ctx) {
+    // nếu có va chạm nhớ vị trí
     for (let i = 0; i < this.rayCount; i++) {
       let end = this.rays[i][1];
       if (this.readings[i]) {
@@ -87,6 +95,7 @@ class Sensor {
       ctx.strokeStyle = "yellow";
       ctx.moveTo(this.rays[i][0].x, this.rays[i][0].y);
       ctx.lineTo(end.x, end.y);
+      // hiển thị nét mà người dùng vẽ
       ctx.stroke();
 
       ctx.beginPath();

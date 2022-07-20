@@ -1,3 +1,6 @@
+/*
+tô màu background
+ */
 body{
     margin:0;
     background:darkgray;
@@ -26,6 +29,10 @@ button:hover{
 #networkCanvas{
     background:black;
 }
+
+/*
+Tô màu tuyến đường cho ô tô di chuyển
+*/
 #carCanvas{
     background:lightgray;
 }

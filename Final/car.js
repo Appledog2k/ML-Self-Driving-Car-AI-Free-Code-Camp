@@ -9,7 +9,9 @@ class Car {
     this.acceleration = 0.2;
     this.maxSpeed = maxSpeed;
     this.friction = 0.05;
+
     this.angle = 0;
+
     this.damaged = false;
 
     this.useBrain = controlType == "AI";
@@ -18,8 +20,8 @@ class Car {
       this.sensor = new Sensor(this);
       this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]);
     }
-    this.controls = new Controls(controlType);
 
+    this.controls = new Controls(controlType);
     this.img = new Image();
     this.img.src = "car.png";
 
@@ -97,6 +99,7 @@ class Car {
     return points;
   }
 
+  // thiết lập tốc độ khi di chuyển
   #move() {
     if (this.controls.forward) {
       this.speed += this.acceleration;
@@ -105,6 +108,7 @@ class Car {
       this.speed -= this.acceleration;
     }
 
+    // tốc độ tối đa khi ô tô tiến và lùi
     if (this.speed > this.maxSpeed) {
       this.speed = this.maxSpeed;
     }
@@ -118,10 +122,14 @@ class Car {
     if (this.speed < 0) {
       this.speed += this.friction;
     }
+
+    // ảnh hưởng của lực ma sát tới chuyển động của xe
     if (Math.abs(this.speed) < this.friction) {
       this.speed = 0;
     }
 
+    // thiết lập chuyển động cho xe
+    // khi xe chuyển động thì mới được rẽ
     if (this.speed != 0) {
       const flip = this.speed > 0 ? 1 : -1;
       if (this.controls.left) {
@@ -141,9 +149,13 @@ class Car {
       this.sensor.draw(ctx);
     }
 
+    // lưu ngữ cảnh và dịch đến điểm muốn quay vòng
     ctx.save();
     ctx.translate(this.x, this.y);
+
+    // xoay bối cảnh xoay
     ctx.rotate(-this.angle);
+
     if (!this.damaged) {
       ctx.drawImage(
         this.mask,
@@ -161,6 +173,8 @@ class Car {
       this.width,
       this.height
     );
+
+    // khôi phục ngữ cảnh sau khi dịch và xoay, dịch và xoay
     ctx.restore();
   }
 }
